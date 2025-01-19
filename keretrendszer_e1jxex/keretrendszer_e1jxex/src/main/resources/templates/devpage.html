@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Developer Page</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<h2>Games List</h2>
+
+<div>
+    <a href="/devpage/new">Add New Game</a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Developer</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="game : ${games}">
+        <td th:text="${game.title}"></td>
+        <td th:text="${game.description}"></td>
+        <td th:text="${game.price}"></td>
+        <td th:text="${game.developer?.username}">No developer assigned</td>
+        <td>
+            <a th:href="@{/devpage/edit/{id}(id=${game.id})}">Edit</a>
+            <a th:href="@{/devpage/delete/{id}(id=${game.id})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div>
+    <p>
+        <a th:href="@{/}">Back :)</a>
+    </p>
+</div>
+
+</body>
+</html>

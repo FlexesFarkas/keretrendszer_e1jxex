@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Reviews</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<h1>Manage Reviews</h1>
+<a class="back-link" th:href="@{/}">Back to HomePage</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Reviewer</th>
+        <th>Game</th>
+        <th>Rating</th>
+        <th>Comment</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="review : ${reviews}">
+        <td th:text="${review.id}"></td>
+        <td th:text="${review.user.username}"></td>
+        <td th:text="${review.game.title}"></td>
+        <td th:text="${review.rating}"></td>
+        <td th:text="${review.comment}"></td>
+        <td class="actions">
+            <form th:action="@{/reviews/delete/{id}(id=${review.id})}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

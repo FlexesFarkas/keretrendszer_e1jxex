@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<h2>Login Page</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Login</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <div class="login-form">
+                <img src="@{/images/login.png}"/>
+                <form action="/authenticatedUser" method="POST">
+                    <p>
+                        Username: <input type="text" name="username" required>
+                    </p>
+                    <p>
+                        Password: <input type="password" name="password" required>
+                    </p>
+                    <input type="submit" value="Login">
+                    <p>Regisztrálni <a href="/register">Itt tudsz.</a></p>
+                </form>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

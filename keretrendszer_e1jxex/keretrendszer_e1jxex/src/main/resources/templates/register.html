@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<h1>Register</h1>
+
+<form action="/register" method="POST">
+    <table>
+        <tr>
+            <td>Username:</td>
+            <td><input type="text" name="username" required></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input type="password" name="password" required></td>
+        </tr>
+        <tr>
+            <td>Confirm Password:</td>
+            <td><input type="password" name="confirmPassword" required></td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td><input type="email" name="email" required></td>
+        </tr>
+        <tr>
+            <td>Balance:</td>
+            <td><input type="number" name="balance" value="0"></td>
+        </tr>
+        <tr>
+            <td>Role:</td>
+            <td>
+                <select name="role" required>
+                    <option value="USER">User</option>
+                    <option value="MODERATOR">Moderátor</option>
+                    <option value="DEVELOPER">Fejlesztő</option>
+                    <option value="ADMIN">Admin</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: center;">
+                <input type="submit" value="Register">
+            </td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>

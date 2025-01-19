@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Page</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<h2>Felhasználók (csak adminoknak, szuper titkos!)</h2>
+
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Felhasználónév</th>
+    <th>Email</th>
+    <th>Műveletek</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="user : ${users}">
+    <td th:text="${user.id}"></td>
+    <td th:text="${user.username}"></td>
+    <td th:text="${user.email}"></td>
+    <td>
+      <form th:action="@{/admin/delete-user}" method="post">
+        <input type="hidden" name="userId" th:value="${user.id}" />
+        <button type="submit">Törlés</button>
+      </form>
+      <form th:action="@{/admin/rename-user}" method="post">
+        <input type="hidden" name="userId" th:value="${user.id}" />
+        <input type="text" name="newUsername" placeholder="Új felhasználónév" required />
+        <button type="submit">Átnevezés</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div>
+  <p>
+    <a th:href="@{/}">Vissza. :)</a>
+  </p>
+</div>
+
+</body>
+</html>

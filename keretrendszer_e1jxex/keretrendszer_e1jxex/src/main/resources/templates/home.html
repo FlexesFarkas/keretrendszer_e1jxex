@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<h1>Welcome Home</h1>
+
+<div>
+    <p>
+        Bejelentkezett felhasználó:
+        <span th:if="${user != null}" th:text="${user.username}">Nincs bejelentkezett felhasználó</span>
+    </p>
+    <p>Fiók egyenleg: <span th:text="${userBalance}"></span></p>
+</div>
+
+<hr>
+
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Game</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Developer</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="game : ${games}">
+            <td th:text="${game.title}"></td>
+            <td th:text="${game.description}"></td>
+            <td th:text="${game.price}"></td>
+            <td th:text="${game.developer?.username}">Névtelen dev.</td>
+            <td>
+                <p th:text="${game.imagePath}"> a game.imagePath tartalma, ott is van.</p>
+                <img src=th:text="@{${game.imagePath}}" alt="Game Image" />
+                <img th:src="@{${game.imagePath}}" alt="Game Image" />
+                <img th:src="@{/images/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
+                <img th:src="@{http://example.com/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
+                <img th:src="@{${baseUrl}/images/{imageName}(imageName=${game.imagePath})}" alt="Game Image" />
+                <img th:src="@{${serverUrl}/media/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
+                <img th:src="@{${game.imagePath}}" alt="Game Image" />
+                <img th:src="@{${contextPath}/images/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
+                <img src="/images/${game.imagePath}" alt="Game Image" />
+                <img src="@{/images/{imageName}(imageName=${game.imagePath})}" alt="Game Image" />
+                <img src="@{${basePath}/images/{imageName}(imageName=${game.imagePath})}" alt="Game Image" />
+                <img src="@{${uploadFolder}/images/{imageName}(imageName=${game.imagePath})}" alt="Game Image" />
+                <img th:src="@{${pathPrefix}/images/{imageName}(imageName=${game.imagePath})}" alt="Game Image" />
+                <img th:src="@{${cdnUrl}/images/{imageName}(imageName=${game.imagePath})}" alt="Game Image" />
+                <img th:src="@{${appUrl}/images/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
+                <img src="@{${game.imagePath}}" alt="Game Image" />
+                <img src="@{${game.imagePath}(game.imagePath='images/kristalyfu.png')}" alt="Game Image" />
+                <img th:src="@{${mediaPath}/images/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
+                <img src="@{${baseUri}/images/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
+                <img th:src="@{${userDirectory}/images/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
+                <img src="/images/{imagePath}" alt="Game Image" />
+                <img src="@{/images/{imagePath}(imagePath='images/kristalyfu.png')}" alt="Game Image" />
+                <img src="/images/kristalyfu.png" alt="Game Image" />
+            </td>
+
+
+
+
+        </td>
+
+            </td>
+            <td class="actions">
+                <form th:action="@{/purchases/purchase}" method="POST">
+                    <input type="hidden" th:name="gameId" th:value="${game.id}" />
+                    <button type="submit"
+                            th:disabled="${userPurchasedGame.contains(game)}"
+                            th:text="${userPurchasedGame.contains(game) ? 'You have already purchased this game' : 'Buy'}"></button>
+                </form>
+                <p th:if="${userPurchasedGame.contains(game)}" class="green">Már megvetted :)</p>
+                <p th:if="${userBalance < game.price}" class="red">Nincs elég pénz a vásárláshoz.</p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<hr>
+
+<div>
+    <ul class="navigation-list">
+        <li>
+            <form th:action="@{/reviews/}" method="GET">
+                <button type="submit">Értékelések</button>
+            </form>
+        </li>
+        <li sec:authorize="hasAnyRole('ADMIN', 'DEVELOPER')">
+            <form th:action="@{/devpage}" method="GET">
+                <button type="submit">Fejlesztői lap</button>
+            </form>
+        </li>
+        <li sec:authorize="hasRole('ADMIN')">
+            <form th:action="@{/admin/users}" method="GET">
+                <button type="submit">Admin lap</button>
+            </form>
+        </li>
+        <li>
+            <form th:action="@{/purchases}" method="GET">
+                <button type="submit">Birtokolt játékok</button>
+            </form>
+        </li>
+    </ul>
+</div>
+
+<hr>
+
+<form th:action="@{/logout}" method="POST">
+    <button type="submit">Logout</button>
+</form>
+
+</body>
+</html>
