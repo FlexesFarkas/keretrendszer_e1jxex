@@ -35,8 +35,8 @@
         </p>
 
         <p>
-          <label for="imagePath">Image:</label>
-          <input type="file" id="imagePath" name="image" accept="image/*" required>
+          <label for="video">Video:</label>
+          <input type="file" id="video" name="video" accept="video/*" required>
         </p>
 
         <p>
@@ -47,6 +47,32 @@
   </tr>
   </tbody>
 </table>
-
+<ul class="navigation-list">
+  <li sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')">
+    <form th:action="@{/reviews/}" method="GET">
+      <button type="submit">Értékelések</button>
+    </form>
+  </li>
+  <li sec:authorize="hasAnyRole('ADMIN', 'DEVELOPER')">
+    <form th:action="@{/devpage}" method="GET">
+      <button type="submit">Fejlesztői lap</button>
+    </form>
+  </li>
+  <li sec:authorize="hasRole('ADMIN')">
+    <form th:action="@{/admin/users}" method="GET">
+      <button type="submit">Admin lap</button>
+    </form>
+  </li>
+  <li>
+    <form th:action="@{/purchases}" method="GET">
+      <button type="submit">Birtokolt játékok</button>
+    </form>
+  </li>
+  <li>
+    <form th:action="@{/}" method="GET">
+      <button type="submit">Visza az árúházba</button>
+    </form>
+  </li>
+</ul>
 </body>
 </html>

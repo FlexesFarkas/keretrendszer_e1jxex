@@ -75,10 +75,12 @@ public class GameController {
     }
 
     @PostMapping("/new")
-    public String createGame(@ModelAttribute Game game, @RequestParam("image") MultipartFile image,
-                             @AuthenticationPrincipal org.springframework.security.core.userdetails.User securityUser, RedirectAttributes redirectAttributes) {
+    public String createGame(@ModelAttribute Game game,
+                             @RequestParam("video") MultipartFile video,
+                             @AuthenticationPrincipal org.springframework.security.core.userdetails.User securityUser,
+                             RedirectAttributes redirectAttributes) {
         Optional<User> optionalUser = userDAO.findByUsername(securityUser.getUsername());
-        if (securityUser != null ) {
+        if (securityUser != null) {
             game.setDeveloper(optionalUser.get());
         } else {
             redirectAttributes.addFlashAttribute("error", "Be kell jelentkezned hogy játékot tudj csinálni..");
@@ -90,18 +92,20 @@ public class GameController {
                     .map(Role::getName)
                     .anyMatch(role -> role.equals("ADMIN") || role.equals("DEVELOPER"));
             if (hasRequiredRole) {
-                String imagePath = saveImage(image);
-                game.setImagePath(imagePath);
+                String videoPath = saveVideo(video);
+                game.setImagePath(videoPath);
+
                 gameDAO.save(game);
             }
-        }
-        else {
+        } else {
             redirectAttributes.addFlashAttribute("error", "Csak admin vagy developer csinálhat játékot.");
             return "redirect:/plain-login";
         }
 
         return "redirect:/devpage";
     }
+
+
 
     @GetMapping("/edit/{id}")
     public String showEditGameForm(@PathVariable("id") int id,
@@ -128,20 +132,22 @@ public class GameController {
 
     @PostMapping("/edit/{id}")
     public String updateGame(@PathVariable("id") int id, @ModelAttribute Game game,
-                             @RequestParam("image") MultipartFile image, @AuthenticationPrincipal org.springframework.security.core.userdetails.User securityUser) {
+                             @RequestParam("video") MultipartFile video,
+                             @AuthenticationPrincipal org.springframework.security.core.userdetails.User securityUser) {
         if (securityUser != null) {
             User developer = userDAO.findByUsername(securityUser.getUsername())
                     .orElseThrow(() -> new RuntimeException("User not found"));
             game.setDeveloper(developer);
         }
-        if (!image.isEmpty()) {
-            String imagePath = saveImage(image);
-            game.setImagePath(imagePath);
+        if (!video.isEmpty()) {
+            String videoPath = saveVideo(video);
+            game.setImagePath(videoPath);
         }
 
         gameDAO.update(game);
         return "redirect:/devpage";
     }
+
 
     @GetMapping("/delete/{id}")
     public String deleteGame(@PathVariable("id") int id, @AuthenticationPrincipal User user) {
@@ -165,6 +171,25 @@ public class GameController {
             throw new RuntimeException("Kép mentése sikertelen. :(", e);
         }
     }
+
+
+    private static final String UPLOAD_VIDEO_DIR = "src/main/resources/static/videos/";
+
+    private String saveVideo(MultipartFile video) {
+        if (video.isEmpty()) {
+            return null;
+        }
+        try {
+            String fileName = video.getOriginalFilename();
+            Path targetLocation = new File(UPLOAD_VIDEO_DIR + fileName).toPath();
+            Files.createDirectories(targetLocation.getParent());
+            Files.copy(video.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            return "videos/" + fileName;
+        } catch (IOException e) {
+            throw new RuntimeException("Videó mentése sikertelen. :(", e);
+        }
+    }
+
 
 
 

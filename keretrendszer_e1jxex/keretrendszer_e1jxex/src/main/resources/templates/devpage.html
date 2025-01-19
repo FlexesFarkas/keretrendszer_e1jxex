@@ -7,20 +7,20 @@
 </head>
 <body>
 
-<h2>Games List</h2>
+<h1>Saját fejlesztések</h1>
 
 <div>
-    <a href="/devpage/new">Add New Game</a>
+    <a href="/devpage/new">Új játék hozzáadása</a>
 </div>
 
 <table>
     <thead>
     <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Developer</th>
-        <th>Actions</th>
+        <th>Cim</th>
+        <th>Leirás</th>
+        <th>Ár(ft)</th>
+        <th>Fejlesztő</th>
+        <th>Lehetőségek</th>
     </tr>
     </thead>
     <tbody>
@@ -28,10 +28,10 @@
         <td th:text="${game.title}"></td>
         <td th:text="${game.description}"></td>
         <td th:text="${game.price}"></td>
-        <td th:text="${game.developer?.username}">No developer assigned</td>
+        <td th:text="${game.developer?.username}">ismeretlen</td>
         <td>
-            <a th:href="@{/devpage/edit/{id}(id=${game.id})}">Edit</a>
-            <a th:href="@{/devpage/delete/{id}(id=${game.id})}">Delete</a>
+            <button class="actions-button" th:onclock="@{/devpage/edit/{id}(id=${game.id})}">Változtatás</button>
+            <button class="actions-button" th:onclock="@{/devpage/delete/{id}(id=${game.id})}">Törlés</button>
         </td>
     </tr>
     </tbody>
@@ -39,7 +39,7 @@
 
 <div>
     <p>
-        <a th:href="@{/}">Back :)</a>
+        <a th:href="@{/}">Vissza</a>
     </p>
 </div>
 

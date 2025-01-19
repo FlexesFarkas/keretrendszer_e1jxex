@@ -59,7 +59,6 @@ public class LoginController {
 
             model.addAttribute("userPurchasedGame", userPurchasedGames);
 
-
             List<String> gameImages = games.stream()
                     .map(Game::getImagePath)
                     .collect(Collectors.toList());

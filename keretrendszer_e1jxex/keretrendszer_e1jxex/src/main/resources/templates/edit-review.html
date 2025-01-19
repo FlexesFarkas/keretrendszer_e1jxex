@@ -2,14 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Edit Review</title>
+  <title>Hozzászólás megváltoztatása</title>
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 
-<h1>Edit Review</h1>
-<a th:href="@{/}">Back to HomePage</a>
-
+<h1>Hozzászólás megváltoztatása</h1>
 <table>
   <thead>
   <tr>
@@ -38,6 +36,35 @@
   </tr>
   </tbody>
 </table>
+<ul class="navigation-list">
+  <li sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')">
+    <form th:action="@{/reviews/}" method="GET">
+      <button type="submit">Értékelések</button>
+    </form>
+  </li>
+  <li sec:authorize="hasAnyRole('ADMIN', 'DEVELOPER')">
+    <form th:action="@{/devpage}" method="GET">
+      <button type="submit">Fejlesztői lap</button>
+    </form>
+  </li>
+  <li sec:authorize="hasRole('ADMIN')">
+    <form th:action="@{/admin/users}" method="GET">
+      <button type="submit">Admin lap</button>
+    </form>
+  </li>
+  <li>
+    <form th:action="@{/purchases}" method="GET">
+      <button type="submit">Birtokolt játékok</button>
+    </form>
+  </li>
+  <li>
+    <form th:action="@{/}" method="GET">
+      <button type="submit">Visza az árúházba</button>
+    </form>
+  </li>
+</ul>
+</div>
+
 
 </body>
 </html>

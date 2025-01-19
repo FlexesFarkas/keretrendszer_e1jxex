@@ -39,36 +39,14 @@
             <td th:text="${game.price}"></td>
             <td th:text="${game.developer?.username}">Névtelen dev.</td>
             <td>
-                <p th:text="${game.imagePath}"> a game.imagePath tartalma, ott is van.</p>
-                <img src=th:text="@{${game.imagePath}}" alt="Game Image" />
-                <img th:src="@{${game.imagePath}}" alt="Game Image" />
-                <img th:src="@{/images/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
-                <img th:src="@{http://example.com/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
-                <img th:src="@{${baseUrl}/images/{imageName}(imageName=${game.imagePath})}" alt="Game Image" />
-                <img th:src="@{${serverUrl}/media/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
-                <img th:src="@{${game.imagePath}}" alt="Game Image" />
-                <img th:src="@{${contextPath}/images/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
-                <img src="/images/${game.imagePath}" alt="Game Image" />
-                <img src="@{/images/{imageName}(imageName=${game.imagePath})}" alt="Game Image" />
-                <img src="@{${basePath}/images/{imageName}(imageName=${game.imagePath})}" alt="Game Image" />
-                <img src="@{${uploadFolder}/images/{imageName}(imageName=${game.imagePath})}" alt="Game Image" />
-                <img th:src="@{${pathPrefix}/images/{imageName}(imageName=${game.imagePath})}" alt="Game Image" />
-                <img th:src="@{${cdnUrl}/images/{imageName}(imageName=${game.imagePath})}" alt="Game Image" />
-                <img th:src="@{${appUrl}/images/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
-                <img src="@{${game.imagePath}}" alt="Game Image" />
-                <img src="@{${game.imagePath}(game.imagePath='images/kristalyfu.png')}" alt="Game Image" />
-                <img th:src="@{${mediaPath}/images/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
-                <img src="@{${baseUri}/images/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
-                <img th:src="@{${userDirectory}/images/{imagePath}(imagePath=${game.imagePath})}" alt="Game Image" />
-                <img src="/images/{imagePath}" alt="Game Image" />
-                <img src="@{/images/{imagePath}(imagePath='images/kristalyfu.png')}" alt="Game Image" />
-                <img src="/images/kristalyfu.png" alt="Game Image" />
+                <video width="320" height="240" controls>
+                    <source th:src="@{'/videos/' + ${game.imagePath}}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+
             </td>
 
-
-
-
-        </td>
+            </td>
 
             </td>
             <td class="actions">
@@ -89,8 +67,9 @@
 <hr>
 
 <div>
+    
     <ul class="navigation-list">
-        <li>
+        <li sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')">
             <form th:action="@{/reviews/}" method="GET">
                 <button type="submit">Értékelések</button>
             </form>
