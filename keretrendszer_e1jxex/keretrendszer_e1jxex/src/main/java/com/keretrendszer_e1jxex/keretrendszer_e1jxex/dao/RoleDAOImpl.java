@@ -52,7 +52,7 @@ public class RoleDAOImpl implements RoleDAO {
         if (role.getId() != null && entityManager.find(Role.class, role.getId()) != null) {
             entityManager.merge(role);
         } else {
-            throw new IllegalArgumentException("Role with ID " + role.getId() + " does not exist.");
+            throw new IllegalArgumentException("Szerepkör " + role.getId() + " nem létezik.");
         }
     }
 
@@ -63,7 +63,7 @@ public class RoleDAOImpl implements RoleDAO {
         if (role != null) {
             entityManager.remove(role);
         } else {
-            throw new IllegalArgumentException("Role with ID " + id + " does not exist.");
+            throw new IllegalArgumentException("Szerepkör " + id + " nem létezik.");
         }
     }
 }

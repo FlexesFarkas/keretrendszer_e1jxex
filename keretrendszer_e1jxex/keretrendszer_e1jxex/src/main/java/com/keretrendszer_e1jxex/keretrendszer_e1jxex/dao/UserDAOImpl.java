@@ -26,7 +26,7 @@ public class UserDAOImpl implements UserDAO {
     @Transactional
     public void save(User user) {
         if (user.getUsername() == null || user.getPassword() == null) {
-            throw new IllegalArgumentException("Username and password must not be null.");
+            throw new IllegalArgumentException("Felhasználónév vagy jelszó nem lehet üres.");
         }
         entityManager.merge(user);
         entityManager.flush();
@@ -63,7 +63,7 @@ public class UserDAOImpl implements UserDAO {
             entityManager.merge(user);
             entityManager.flush();
         } else {
-            throw new IllegalArgumentException("User with ID " + user.getId() + " does not exist.");
+            throw new IllegalArgumentException("Felhasználó " + user.getId() + " nem létezik.");
         }
     }
 
@@ -75,7 +75,7 @@ public class UserDAOImpl implements UserDAO {
             entityManager.remove(user);
             entityManager.flush();
         } else {
-            throw new IllegalArgumentException("User with ID " + id + " does not exist.");
+            throw new IllegalArgumentException("Felhasználó " + id + " nem létezik.");
         }
     }
 

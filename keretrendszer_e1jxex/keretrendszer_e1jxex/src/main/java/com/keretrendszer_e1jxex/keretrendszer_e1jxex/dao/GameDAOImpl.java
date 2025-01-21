@@ -53,7 +53,7 @@ public class GameDAOImpl implements GameDAO {
         if (game.getId() != null && entityManager.find(Game.class, game.getId()) != null) {
             entityManager.merge(game);
         } else {
-            throw new IllegalArgumentException("Game with ID " + game.getId() + " does not exist.");
+            throw new IllegalArgumentException("Játék" + game.getId() + " nem létezik.");
         }
     }
 
@@ -64,7 +64,7 @@ public class GameDAOImpl implements GameDAO {
         if (game != null) {
             entityManager.remove(game);
         } else {
-            throw new IllegalArgumentException("Game with ID " + id + " does not exist.");
+            throw new IllegalArgumentException("Játék " + id + " nem létezik.");
         }
     }
 }

@@ -54,7 +54,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         if (purchase.getId() != null && entityManager.find(Purchase.class, purchase.getId()) != null) {
             entityManager.merge(purchase);
         } else {
-            throw new IllegalArgumentException("Purchase with ID " + purchase.getId() + " does not exist.");
+            throw new IllegalArgumentException("Vásárlás " + purchase.getId() + " nem létezik.");
         }
     }
 
@@ -65,7 +65,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         if (purchase != null) {
             entityManager.remove(purchase);
         } else {
-            throw new IllegalArgumentException("Purchase with ID " + id + " does not exist.");
+            throw new IllegalArgumentException("Vásárlás " + id + " nem létezik.");
         }
     }
 

@@ -57,7 +57,7 @@ public class ReviewDAOImpl implements ReviewDAO {
             entityManager.merge(review);
             entityManager.flush();
         } else {
-            throw new IllegalArgumentException("Review with ID " + review.getId() + " does not exist.");
+            throw new IllegalArgumentException("Értékelés " + review.getId() + " nem létezik.");
         }
     }
 
@@ -68,7 +68,7 @@ public class ReviewDAOImpl implements ReviewDAO {
         if (review != null) {
             entityManager.remove(review);
         } else {
-            throw new IllegalArgumentException("Review with ID " + id + " does not exist.");
+            throw new IllegalArgumentException("Értékelés " + id + " nem létezik.");
         }
     }
     @Override
