@@ -14,26 +14,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class StoreUserDetailsService implements UserDetailsService {
-
     private final UserDAO userDAO;
-
     public StoreUserDetailsService(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Felhasználó keresése
         User user = userDAO.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
-
-        // Szerepkörök betöltése
+                .orElseThrow(() -> new UsernameNotFoundException("nincs ilyen nevű felhasználó: " + username));
         List<GrantedAuthority> authorities = userDAO.findRolesByUserId(user.getId())
                 .stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
-
-        // Visszatérés UserDetails objektummal
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),

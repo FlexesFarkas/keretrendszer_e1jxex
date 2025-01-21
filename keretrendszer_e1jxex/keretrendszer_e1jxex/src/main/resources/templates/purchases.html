@@ -9,21 +9,18 @@
 
 <h1>Vásárlások</h1>
 <p>Fiók egyenleg: <span th:text="${userBalance}"></span></p>
-
 <hr>
-
 <div>
     <h2>Játékkönyvtárad:</h2>
     <table>
         <thead>
         <tr>
-            <th>Game</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Developer</th>
-            <th>Image</th>
-            <th>Review</th>
-            <th>Refund</th>
+            <th>Játék</th>
+            <th>Leirás</th>
+            <th>Ár(ft)</th>
+            <th>Fejlesztő</th>
+            <th>Trailer</th>
+            <th>Lehetőségek</th>
         </tr>
         </thead>
         <tbody>
@@ -41,16 +38,14 @@
                 <p th:text="${purchase.game.developer?.username}">Névtelen dev.</p>
             </td>
             <td>
-                <img th:src="@{${purchase.game.imagePath}}" alt="womp womp, nincs kep :(" style="max-width: 100px;"/>
+                <img th:src="@{${purchase.game.imagePath}}" alt="Nem működik a kép/videó :(" style="max-width: 100px;"/>
             </td>
             <td>
-                <form th:action="@{/reviews/create}" method="POST">
+                <form th:action="@{/reviews/create}" method="POST" onsubmit="return confirm('Kirakod az értékelésed?');">
                     <input type="hidden" th:name="purchaseId" th:value="${purchase.id}" />
-
-                    <textarea th:name="reviewText" placeholder="Write your review here..." required></textarea>
-
+                    <textarea th:name="reviewText" placeholder="Mit gondolsz a játékról?..." required></textarea>
                     <select th:name="rating" required>
-                        <option value="" disabled selected>Select a rating</option>
+                        <option value="" disabled selected>Add meg a pontszámod :D</option>
                         <option th:value="1">1</option>
                         <option th:value="2">2</option>
                         <option th:value="3">3</option>
@@ -62,13 +57,13 @@
                         <option th:value="9">9</option>
                         <option th:value="10">10</option>
                     </select>
-                    <button type="submit">Submit Review</button>
+                    <button type="submit">Értékelés!</button>
                 </form>
             </td>
             <td>
                 <form th:action="@{/purchases/refund}" method="POST">
                     <input type="hidden" th:name="purchaseId" th:value="${purchase.id}" />
-                    <button type="submit">Refund</button>
+                    <button type="submit">Visszatérités</button>
                 </form>
             </td>
         </tr>

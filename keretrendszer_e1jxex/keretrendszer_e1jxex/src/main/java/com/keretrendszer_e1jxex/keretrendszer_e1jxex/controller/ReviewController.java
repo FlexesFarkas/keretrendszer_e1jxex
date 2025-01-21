@@ -42,8 +42,21 @@ public class ReviewController {
     public String manageReviews(Model model) {
         List<Review> reviews = reviewDAO.findAll();
         model.addAttribute("reviews", reviews);
+
+        List<Game> games = gameDAO.findAll();
+        for (Game game : games) {
+            List<Review> gameReviews = reviewDAO.findByGame(game);
+            double averageRating = gameReviews.stream()
+                    .mapToInt(Review::getRating)
+                    .average()
+                    .orElse(0.0);
+            model.addAttribute("avgRating_" + game.getId(), averageRating);
+
+        }
+
         return "reviews";
     }
+
 
     @PostMapping("/create")
     public String createReview(@RequestParam int purchaseId, @RequestParam String reviewText, @RequestParam String rating, Model model) {

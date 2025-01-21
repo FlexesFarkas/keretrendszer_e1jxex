@@ -40,7 +40,7 @@ public class LoginController {
     @GetMapping("/")
     public String ShowHome(@AuthenticationPrincipal org.springframework.security.core.userdetails.User securityUser, Model model) {
         if (securityUser == null) {
-            return "redirect:/login";
+            return "redirect:/showMyLoginPage";
         }
 
         Optional<User> userOptional = userService.findByUsername(securityUser.getUsername());

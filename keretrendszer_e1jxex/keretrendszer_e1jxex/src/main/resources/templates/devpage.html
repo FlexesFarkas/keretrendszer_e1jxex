@@ -10,7 +10,13 @@
 <h1>Saját fejlesztések</h1>
 
 <div>
-    <a href="/devpage/new">Új játék hozzáadása</a>
+    <ul class="navigation-list">
+        <li sec:authorize="hasAnyRole('ADMIN', 'DEVELOPER')">
+            <form th:action="@{/devpage/new}" method="GET">
+                <button type="submit">Új játék létrehozása</button>
+            </form>
+        </li>
+    </ul>
 </div>
 
 <table>
@@ -30,17 +36,53 @@
         <td th:text="${game.price}"></td>
         <td th:text="${game.developer?.username}">ismeretlen</td>
         <td>
-            <button class="actions-button" th:onclock="@{/devpage/edit/{id}(id=${game.id})}">Változtatás</button>
-            <button class="actions-button" th:onclock="@{/devpage/delete/{id}(id=${game.id})}">Törlés</button>
+            <ul class="navigation-list">
+                <li sec:authorize="hasAnyRole('ADMIN', 'DEVELOPER')">
+                    <form th:action="@{/devpage/edit/{id}(id=${game.id})}" method="GET">
+                        <button type="submit">Változtatás</button>
+                    </form>
+                </li>
+                <li sec:authorize="hasAnyRole('ADMIN', 'DEVELOPER')">
+                    <form th:action="@{/devpage/delete/{id}(id=${game.id})}" method="POST"
+                          onsubmit="return confirm('Biztosan törölni szeretnéd ezt a játékot?');">
+                        <button type="submit">Törlés</button>
+                    </form>
+                </li>
+            </ul>
         </td>
     </tr>
     </tbody>
 </table>
 
 <div>
-    <p>
-        <a th:href="@{/}">Vissza</a>
-    </p>
+
+    <ul class="navigation-list">
+        <li sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')">
+            <form th:action="@{/reviews/}" method="GET">
+                <button type="submit">Értékelések</button>
+            </form>
+        </li>
+        <li sec:authorize="hasAnyRole('ADMIN', 'DEVELOPER')">
+            <form th:action="@{/devpage}" method="GET">
+                <button type="submit">Fejlesztői lap</button>
+            </form>
+        </li>
+        <li sec:authorize="hasRole('ADMIN')">
+            <form th:action="@{/admin/users}" method="GET">
+                <button type="submit">Admin lap</button>
+            </form>
+        </li>
+        <li>
+            <form th:action="@{/purchases}" method="GET">
+                <button type="submit">Birtokolt játékok</button>
+            </form>
+        </li>
+        <li>
+            <form th:action="@{/}" method="GET">
+                <button type="submit">Visza az árúházba</button>
+            </form>
+        </li>
+    </ul>
 </div>
 
 </body>

@@ -37,7 +37,7 @@ public class GameController {
     private PurchaseDAO purchaseDAO;
 
     private static final String UPLOAD_DIR = "src/main/resources/static/images/";
-
+    /// bár asszem alapbol ide mentené
 
 
 
@@ -48,22 +48,18 @@ public class GameController {
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-
             boolean isAdmin = user.getRoles().stream()
                     .map(Role::getName)
                     .anyMatch(role -> role.equals("ADMIN"));
-
             List<Game> games;
             if (isAdmin) {
                 games = gameDAO.findAll();
             } else {
                 games = gameDAO.findByDeveloperId(user.getId());
             }
-
             model.addAttribute("games", games);
             return "devpage";
         }
-
         return "redirect:/plain-login";
     }
 
@@ -79,11 +75,13 @@ public class GameController {
                              @RequestParam("video") MultipartFile video,
                              @AuthenticationPrincipal org.springframework.security.core.userdetails.User securityUser,
                              RedirectAttributes redirectAttributes) {
+
         Optional<User> optionalUser = userDAO.findByUsername(securityUser.getUsername());
+
         if (securityUser != null) {
             game.setDeveloper(optionalUser.get());
         } else {
-            redirectAttributes.addFlashAttribute("error", "Be kell jelentkezned hogy játékot tudj csinálni..");
+            redirectAttributes.addFlashAttribute("error", "Be kell jelentkezned hogy játékot tudj csinálni...");
             return "redirect:/plain-login";
         }
         if (optionalUser.isPresent()) {
@@ -120,10 +118,22 @@ public class GameController {
         User loggedUser = optionalUser.get();
         Game game = gameDAO.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid game ID"));
 
-        if (!game.getDeveloper().getId().equals(loggedUser.getId())) {
-            redirectAttributes.addFlashAttribute("error", "Nincs jogosultságod a játék szerkesztéséhez.");
-            return "redirect:/devpage";
+        if (optionalUser.isPresent()) {
+            boolean isAdmin = loggedUser.getRoles().stream()
+                    .map(Role::getName)
+                    .anyMatch(role -> role.equals("ADMIN"));
+
+            if (isAdmin)
+            {
+                model.addAttribute("game", game);
+                return "edit-game";
+            }
+            else if (!game.getDeveloper().getId().equals(loggedUser.getId())) {
+                redirectAttributes.addFlashAttribute("error", "Nincs jogosultságod a játék szerkesztéséhez.");
+                return "redirect:/devpage";
+            }
         }
+
 
         model.addAttribute("game", game);
         return "edit-game";
@@ -134,26 +144,42 @@ public class GameController {
     public String updateGame(@PathVariable("id") int id, @ModelAttribute Game game,
                              @RequestParam("video") MultipartFile video,
                              @AuthenticationPrincipal org.springframework.security.core.userdetails.User securityUser) {
-        if (securityUser != null) {
-            User developer = userDAO.findByUsername(securityUser.getUsername())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-            game.setDeveloper(developer);
-        }
+        Game originalGame = gameDAO.findById(id).orElseThrow(() -> new IllegalArgumentException("Nem változtathatsz nem létező játékot :("));
+        game.setDeveloper(originalGame.getDeveloper());
         if (!video.isEmpty()) {
             String videoPath = saveVideo(video);
             game.setImagePath(videoPath);
         }
-
         gameDAO.update(game);
         return "redirect:/devpage";
     }
 
 
-    @GetMapping("/delete/{id}")
-    public String deleteGame(@PathVariable("id") int id, @AuthenticationPrincipal User user) {
+    @PostMapping("/delete/{id}")
+    public String deleteGame(@PathVariable("id") int id, @AuthenticationPrincipal org.springframework.security.core.userdetails.User securityUser, RedirectAttributes redirectAttributes) {
+
+        Optional<User> optionalUser = userDAO.findByUsername(securityUser.getUsername());
+
+        if (optionalUser.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Be kell jelentkezned a játék törléséhez.");
+            return "redirect:/plain-login";
+        }
+
+        User loggedUser = optionalUser.get();
+        Game game = gameDAO.findById(id).orElseThrow(() -> new IllegalArgumentException("Nem található a játék az adott azonosítóval: " + id));
+        boolean isAdmin = loggedUser.getRoles().stream()
+                .map(Role::getName)
+                .anyMatch(role -> role.equals("ADMIN"));
+        if (!isAdmin && !game.getDeveloper().getId().equals(loggedUser.getId())) {
+            redirectAttributes.addFlashAttribute("error", "Nincs jogosultságod a játék törléséhez.");
+            return "redirect:/devpage";
+        }
         gameDAO.delete(id);
+        redirectAttributes.addFlashAttribute("success", "A játék sikeresen törölve.");
         return "redirect:/devpage";
     }
+
+
 
 
 

@@ -7,12 +7,11 @@
 </head>
 <body>
 
-<h2>Add New Game</h2>
-
+<h2>Új játék publikálása</h2>
 <table>
   <thead>
   <tr>
-    <th>Create a New Game</th>
+    <th>Játékadatok:</th>
   </tr>
   </thead>
   <tbody>
@@ -20,25 +19,21 @@
     <td>
       <form action="/devpage/new" method="POST" enctype="multipart/form-data">
         <p>
-          <label for="title">Title:</label>
+          <label for="title">Cim:</label>
           <input type="text" id="title" name="title" required>
         </p>
-
         <p>
-          <label for="description">Description:</label>
+          <label for="description">Játékleirás:</label>
           <textarea id="description" name="description" required></textarea>
         </p>
-
         <p>
-          <label for="price">Price:</label>
+          <label for="price">Fogyasztói ár:</label>
           <input type="number" id="price" name="price" required>
         </p>
-
         <p>
-          <label for="video">Video:</label>
+          <label for="video">Trailer feltöltése:</label>
           <input type="file" id="video" name="video" accept="video/*" required>
         </p>
-
         <p>
           <input type="submit" value="Create Game">
         </p>

@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h1>Welcome Home</h1>
+<h1>Online játékárúház</h1>
 
 <div>
     <p>
@@ -16,19 +16,17 @@
     </p>
     <p>Fiók egyenleg: <span th:text="${userBalance}"></span></p>
 </div>
-
 <hr>
-
 <div>
     <table>
         <thead>
         <tr>
-            <th>Game</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Developer</th>
-            <th>Image</th>
-            <th>Actions</th>
+            <th>Játék</th>
+            <th>Leirás</th>
+            <th>Ár</th>
+            <th>Fejlesztő</th>
+            <th>Trailer</th>
+            <th>Lehetőségek</th>
         </tr>
         </thead>
 
@@ -37,27 +35,24 @@
             <td th:text="${game.title}"></td>
             <td th:text="${game.description}"></td>
             <td th:text="${game.price}"></td>
-            <td th:text="${game.developer?.username}">Névtelen dev.</td>
+            <td th:text="${game.developer?.username}">ismeretlen.</td>
             <td>
                 <video width="320" height="240" controls>
                     <source th:src="@{'/videos/' + ${game.imagePath}}" type="video/mp4">
-                    Your browser does not support the video tag.
+                    Nem támogatott a videó a böngésződben :(
                 </video>
-
             </td>
-
             </td>
-
             </td>
             <td class="actions">
-                <form th:action="@{/purchases/purchase}" method="POST">
+                <form th:action="@{/purchases/purchase}" method="POST" onsubmit="return confirm('Biztosan megveszed ezt a játékot?');">
                     <input type="hidden" th:name="gameId" th:value="${game.id}" />
                     <button type="submit"
                             th:disabled="${userPurchasedGame.contains(game)}"
-                            th:text="${userPurchasedGame.contains(game) ? 'You have already purchased this game' : 'Buy'}"></button>
+                            th:text="${userPurchasedGame.contains(game) ? '-' : 'Megvétel'}"></button>
                 </form>
-                <p th:if="${userPurchasedGame.contains(game)}" class="green">Már megvetted :)</p>
-                <p th:if="${userBalance < game.price}" class="red">Nincs elég pénz a vásárláshoz.</p>
+                <p th:if="${userPurchasedGame.contains(game)}" class="green">( Már megvetted :D )</p>
+                <p th:if="${userBalance < game.price}" class="red">Nincs elég pénz a vásárláshoz. :,(</p>
             </td>
         </tr>
         </tbody>
@@ -94,7 +89,7 @@
 
 <hr>
 
-<form th:action="@{/logout}" method="POST">
+<form th:action="@{/logout}" method="POST" onsubmit="return confirm('Most ki fogsz jelentkezni, biztos vagy benne?');">
     <button type="submit">Logout</button>
 </form>
 

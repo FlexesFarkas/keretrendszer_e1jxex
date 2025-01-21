@@ -33,6 +33,11 @@
         <input type="text" name="newUsername" placeholder="Új felhasználónév" required />
         <button type="submit">Átnevezés</button>
       </form>
+      <form th:action="@{/admin/set-balance}" method="post">
+        <input type="hidden" name="userId" th:value="${user.id}" />
+        <input type="number" name="newBalance" placeholder="Új egyenleg" required />
+        <button type="submit">Egyenleg módosítása</button>
+      </form>
     </td>
   </tr>
   </tbody>

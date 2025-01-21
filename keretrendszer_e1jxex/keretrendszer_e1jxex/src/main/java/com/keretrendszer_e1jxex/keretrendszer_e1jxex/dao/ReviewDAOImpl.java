@@ -1,5 +1,6 @@
 package com.keretrendszer_e1jxex.keretrendszer_e1jxex.dao;
 
+import com.keretrendszer_e1jxex.keretrendszer_e1jxex.entities.Game;
 import com.keretrendszer_e1jxex.keretrendszer_e1jxex.entities.Purchase;
 import com.keretrendszer_e1jxex.keretrendszer_e1jxex.entities.Review;
 import com.keretrendszer_e1jxex.keretrendszer_e1jxex.entities.User;
@@ -33,6 +34,14 @@ public class ReviewDAOImpl implements ReviewDAO {
     public Optional<Review> findById(int id) {
         Review review = entityManager.find(Review.class, id);
         return Optional.ofNullable(review);
+    }
+
+    @Override
+    public List<Review> findByGame(Game game) {
+        TypedQuery<Review> query = entityManager.createQuery(
+                "SELECT r FROM Review r WHERE r.game = :game", Review.class);
+        query.setParameter("game", game);
+        return query.getResultList();
     }
 
     @Override

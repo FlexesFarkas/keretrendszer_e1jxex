@@ -7,20 +7,20 @@
 </head>
 <body>
 
-<h1>Register</h1>
+<h1>Kérlek itt regisztrálj :)</h1>
 
 <form action="/register" method="POST">
     <table>
         <tr>
-            <td>Username:</td>
+            <td>felhasználónév:</td>
             <td><input type="text" name="username" required></td>
         </tr>
         <tr>
-            <td>Password:</td>
+            <td>Jelszó:</td>
             <td><input type="password" name="password" required></td>
         </tr>
         <tr>
-            <td>Confirm Password:</td>
+            <td>Jelszó mégegyszer:</td>
             <td><input type="password" name="confirmPassword" required></td>
         </tr>
         <tr>
@@ -28,14 +28,14 @@
             <td><input type="email" name="email" required></td>
         </tr>
         <tr>
-            <td>Balance:</td>
+            <td>Egyenleg:</td>
             <td><input type="number" name="balance" value="0"></td>
         </tr>
         <tr>
-            <td>Role:</td>
+            <td>Szerepkör:</td>
             <td>
                 <select name="role" required>
-                    <option value="USER">User</option>
+                    <option value="USER">Vásárló</option>
                     <option value="MODERATOR">Moderátor</option>
                     <option value="DEVELOPER">Fejlesztő</option>
                     <option value="ADMIN">Admin</option>

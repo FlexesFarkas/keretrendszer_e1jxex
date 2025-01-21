@@ -6,18 +6,17 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<h1>Manage Reviews</h1>
-<a class="back-link" th:href="@{/}">Back to HomePage</a>
+<h1>Hozzászólások moderálása:</h1>
 
 <table>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Reviewer</th>
-        <th>Game</th>
-        <th>Rating</th>
-        <th>Comment</th>
-        <th>Actions</th>
+        <th>Sorszám</th>
+        <th>Felhasználó</th>
+        <th>Játék</th>
+        <th>Értékelés</th>
+        <th>Leirás</th>
+        <th>Lehetőségek</th>
     </tr>
     </thead>
     <tbody>
@@ -29,7 +28,7 @@
         <td th:text="${review.comment}"></td>
         <td class="actions">
             <form th:action="@{/reviews/delete/{id}(id=${review.id})}" method="post">
-                <button type="submit">Delete</button>
+                <button type="submit">Eltávolitás</button>
             </form>
         </td>
     </tr>

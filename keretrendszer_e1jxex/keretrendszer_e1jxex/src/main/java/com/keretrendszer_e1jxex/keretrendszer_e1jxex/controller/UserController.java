@@ -34,6 +34,9 @@ public class UserController {
 
     @PostMapping("/admin/rename-user")
     public String renameUser(@RequestParam int userId, @RequestParam String newUsername) {
+        if (userDAO.findByUsername(newUsername).isPresent()) {
+            return "redirect:/admin/users";
+        }
         Optional<User> userOptional = userDAO.findById(userId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -42,4 +45,16 @@ public class UserController {
         }
         return "redirect:/admin/users";
     }
+
+    @PostMapping("/admin/set-balance")
+    public String setBalance(@RequestParam int userId, @RequestParam int newBalance) {
+        Optional<User> userOptional = userDAO.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setBalance(newBalance);
+            userDAO.save(user);
+        }
+        return "redirect:/admin/users";
+    }
 }
+
